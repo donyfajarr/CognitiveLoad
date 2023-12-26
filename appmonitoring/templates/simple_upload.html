@@ -1,0 +1,132 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="myxlsx">
+    <input type="file" name="myjson">
+    <input type="text" name="nama">
+    <button type="submit" class="btn btn-danger btn-icon-text"><i class="ti-upload btn-icon-prepend"></i>Upload</button>
+</form>
+
+
+  {% if uploaded_file_url %}
+    <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+  {% endif %}
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Variable Line Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+  <h1>{{nama}}</h1>
+  <canvas id="myLineChart" width="600" height="400"></canvas>
+  <canvas id="myPieChart" width="600" height="400"></canvas>
+  <canvas id="myRadarChart" width="600", height="400"></canvas>
+  <script>
+    // Assuming your data is stored in a JavaScript object named 'data'
+    // Replace it with the actual variable name of your data
+  
+    var data = {
+      labels: JSON.parse('{{time|safe}}'),
+      datasets: [
+        {
+          yAxisID : 'A',
+          label: 'BPM',
+          borderColor: 'red',
+          backgroundColor:'red',
+          data: JSON.parse('{{bpm|safe }}'),
+    
+        },
+        {
+          yAxisID:'B',
+          label : 'Temp',
+          borderColor : 'blue',
+          backgroundColor:'blue',
+          data : JSON.parse('{{temp|safe }}'),
+          
+        }
+      ],
+    };
+  
+    var options = {
+      responsive : true,
+      interaction:{
+        mode:'index',
+        intersect:false,
+      },
+      stacked:false,
+      plugins:{
+        title:{
+          display:true,
+          text:'Grafik Heart Rate-Temperature'
+        }
+      },
+      scales:{
+        A:{
+          type:'linear',
+          position:'left',
+          ticks : {beginAtZero:true, color:'red'},
+          grid:{display:false}
+          
+        },
+        B:{
+          type:'linear',
+          position:'right',
+          ticks:{beginAtZero:true, color:'blue'},
+          grid:{display:false}
+        },
+        x:{ticks:{beginAtZero:true}}
+      },
+      elements: {
+        line: {
+            tension: 0.1
+        }
+    }
+};
+
+  var datapie ={
+    datasets:[{
+      data:[JSON.parse('{{delta|safe }}'),JSON.parse('{{theta|safe }}'),JSON.parse('{{lowalpha|safe }}'),JSON.parse('{{highalpha|safe }}'),JSON.parse('{{lowbeta|safe }}'),JSON.parse('{{highbeta|safe }}'),JSON.parse('{{lowgamma|safe }}'),JSON.parse('{{midgamma|safe }}')]
+    }],
+    labels:['Delta', 'Theta', 'Low-Alpha', 'High-Alpha', 'Low-Beta', 'High-Beta', 'Low-Gamma', 'Mid-Gamma']
+  };
+  var dataradar = {
+    datasets:[{
+      data:[JSON.parse('{{attention|safe}}'), JSON.parse('{{relaxation|safe}}')]
+    }],
+    labels:['Attention', 'Relaxation']
+  }
+  
+    var ctx = document.getElementById('myLineChart').getContext('2d');
+    var myLineChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options:options
+    
+    });
+
+    var pie = document.getElementById('myPieChart').getContext('2d');
+    var myPieChart = new Chart(pie, {
+      type: 'doughnut',
+      data: datapie
+    })
+
+    var radar = document.getElementById('myRadarChart').getContext('2d');
+    var myRadarChart = new Chart(radar, {
+      type:'pie',
+      data:dataradar,
+      options : {
+        elements:{
+          line:{
+            borderWidth : 3
+          }
+        }
+      }
+    })
+  </script>
+  
+  </body>
+  </html>
+  

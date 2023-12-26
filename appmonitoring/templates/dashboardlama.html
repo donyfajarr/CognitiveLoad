@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data</title>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <th>Tanggal</th>
+        <th>BPM</th>
+        <th>Suhu Tubuh</th>
+      </thead>
+      <tbody>
+        {% for item in listdata %}
+        <tr>
+          <td>{{item.0}}</td>
+          <td>{{item.1}}</td>
+          <td>{{item.2}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{% url 'data' %}"><button>Ke Dashboard</button></a>
+  </body>
+</html>
