@@ -75,15 +75,21 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'data'%}">
+              <a class="nav-link" href="{% url 'heartrate'%}">
                 <i class="icon-grid-2 menu-icon"></i>
-                <span class="menu-title">Tabel Data</span>
+                <span class="menu-title">Heart Rate</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'tesupload' %}">
+              <a class="nav-link" href="{% url 'temp' %}">
                 <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">Data Output</span>
+                <span class="menu-title">Temperature</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'emg' %}">
+                <i class="icon-paper menu-icon"></i>
+                <span class="menu-title">EMG</span>
               </a>
             </li>
           </ul>
@@ -115,39 +121,72 @@
               <div class="col-md-12 grid-margin transparent">
                 <div class="row">
                   <div class="col-md-3 mb-4 stretch-card transparent">
-                    <div class="card card-tale">
-                      <div class="card-body">
-                        <p class="mb-4">Beats Per Minutes (BPM)</p>
-                        <p class="fs-30 mb-2" id="livebpm"></p>
-                        <p>beats/minutes</p>
+                    
+                      <div class="card card-tale">
+                        <a href="{% url 'heartrate' %}" style="display:block; text-decoration: none; color: inherit;">
+                        <div class="card-body">
+                          <p class="mb-4">Live Beats Per Minute (BPM)</p>
+                          <p class="fs-30 mb-2" id="livebpm"></p>
+                          <p>beats/minutes</p>
+                        </div>
+                      </a>
                       </div>
-                    </div>
+                  
                   </div>
                   <div class="col-md-3 mb-4 stretch-card transparent">
-                    <div class="card card-dark-blue">
+                    <div class="card card-tale">
+                      <a href="{% url 'temp' %}" style="display:block; text-decoration: none; color: inherit;">
                       <div class="card-body">
-                        <p class="mb-4">Body Temperature</p>
+                        <p class="mb-4">Average BPM</p>
+                        <p class="fs-30 mb-2" id="avgbpm"></p>
+                        <p>beats/minutes</p>
+                      </div>
+                    </a>
+                    </div>
+                  
+                  </div>
+                  <div class="col-md-3 mb-4 stretch-card transparent">
+                    <div class="card card-light-blue">
+                      <a href="{% url 'heartrate' %}" style="display:block; text-decoration: none; color: inherit;">
+                      <div class="card-body">
+                        <p class="mb-4">Live Body Temperature</p>
                         <p class="fs-30 mb-2" id="livetemp"></p>
                         <p>in Celcius (°C)</p>
                       </div>
+                    </a>
                     </div>
                   </div>
                   <div class="col-md-3 mb-4 stretch-card transparent">
                     <div class="card card-light-blue">
+                      <a href="{% url 'temp' %}" style="display:block; text-decoration: none; color: inherit;">
                       <div class="card-body">
-                        <p class="mb-4">Highest BPM</p>
-                        <p class="fs-30 mb-2" id="highbpm"></p>
-                        <p>beats/minutes</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3 mb-4 stretch-card transparent">
-                    <div class="card card-light-danger">
-                      <div class="card-body">
-                        <p class="mb-4">Highest Body Temperature</p>
-                        <p class="fs-30 mb-2" id="hightemp"></p>
+                        <p class="mb-4">Average Body Temperature</p>
+                        <p class="fs-30 mb-2" id="avgtemp"></p>
                         <p>in Celcius (°C)</p>
                       </div>
+                    </a>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-4 stretch-card transparent">
+                    <div class="card card-dark-blue">
+                      <a href="{% url 'emg' %}" style="display:block; text-decoration: none; color: inherit;">
+                      <div class="card-body">
+                        <p class="mb-4">Live EMG Voltage</p>
+                        <p class="fs-30 mb-2" id="liveemg"></p>
+                        <p>in V</p>
+                      </div>
+                    </a>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-4 stretch-card transparent">
+                    <div class="card card-dark-blue">
+                      <a href="{% url 'emg' %}" style="display:block; text-decoration: none; color: inherit;">
+                      <div class="card-body">
+                        <p class="mb-4">Average EMG</p>
+                        <p class="fs-30 mb-2" id="avgemg"></p>
+                        <p>in V</p>
+                      </div>
+                    </a>
                     </div>
                   </div>
                 </div>
@@ -157,71 +196,20 @@
               <div class="col-md-12 grid-margin stretch-card">
                 <div class="col-md-12 mb-4 stretch-card transparent">
                   <div class="card">
-                    <div class="card-body">
-                      <p class="card-title">EMG Data in Period</p>
-                      <p class="font-weight-500">The EMG data of sessions within the date range. This is a period of time when the user's EMG fluctuates</p>
-                      <div class="d-flex flex-wrap mb-5">
-                        
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center" style="height: 100%;">
+                      <p class="card-title mb-2">Live Camera</p>
+                      <div class="d-flex flex-wrap justify-content-center align-items-center">
+                        <img src="/video_feed/" alt="Video Stream" id="videoStream" style="max-width: 100%; max-height: 100%;"/>
                       </div>
-                      <canvas id="emgChart"></canvas>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-12 grid-margin stretch-card">
-                <div class="col-md-12 mb-4 stretch-card transparent">
-                  <div class="card">
-                    <div class="card-body">
-                      <p class="card-title">Data Beats per Minutes in Period</p>
-                      <p class="font-weight-500">The total number BPM of sessions within the date range. This is a period of time when the user's heart rate data fluctuates</p>
-                      <div class="d-flex flex-wrap mb-5">
-                        <div class="mr-5 mt-3">
-                          <p class="text-muted">Average BPM</p>
-                          <h3 class="text-primary fs-30 font-weight-medium" id="avgbpm"></h3>
-                        </div>
-                        <div class="mr-5 mt-3">
-                          <p class="text-muted">Highest BPM</p>
-                          <h3 class="text-primary fs-30 font-weight-medium" id="highbpm"></h3>
-                        </div>
-                        <div class="mr-5 mt-3">
-                          <p class="text-muted">Lowest BPM</p>
-                          <h3 class="text-primary fs-30 font-weight-medium" id="lowbpm"></h3>
-                        </div>
-                      </div>
-                      <canvas class="chartjs-render-monitor-size-expand" id="myChart"></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
+        </div>
             </div>
-            <div class="row">
-              <div class="col-md-12 grid-margin stretch-card">
-                <div class="col-md-12 mb-4 stretch-card transparent">
-                  <div class="card">
-                    <div class="card-body">
-                      <p class="card-title">Data Body Temperature in Period</p>
-                      <p class="font-weight-500">The total number Body Temperature of sessions within the date range. This is a period of time when the user's body temperature data fluctuates</p>
-                      <div class="d-flex flex-wrap mb-5">
-                        <div class="mr-5 mt-3">
-                          <p class="text-muted">Average Body Temperature</p>
-                          <h3 class="text-primary fs-30 font-weight-medium" id="avgtemp"></h3>
-                        </div>
-                        <div class="mr-5 mt-3">
-                          <p class="text-muted">Highest Temperature</p>
-                          <h3 class="text-primary fs-30 font-weight-medium" id="hightemp"></h3>
-                        </div>
-                        <div class="mr-5 mt-3">
-                          <p class="text-muted">Lowest Temperature</p>
-                          <h3 class="text-primary fs-30 font-weight-medium" id="lowtemp"></h3>
-                        </div>
-                      </div>
-                      <canvas id="tempchart"></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            
             </div>
           </div>
   
@@ -264,7 +252,7 @@
 
 <script>
 const test = "https://cognitive-load-default-rtdb.asia-southeast1.firebasedatabase.app/";
-const MAX_DATA_POINTS = 10;
+const MAX_DATA_POINTS = 60;
 
 var data3 = {
   labels : [],
@@ -365,14 +353,14 @@ var config = {
 
 // var emgchart = new Chart(ctx3, config3)
 
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, config);
+// var ctx = document.getElementById('myChart').getContext('2d');
+// var myChart = new Chart(ctx, config);
 
-var xx = document.getElementById('tempchart').getContext('2d');
-var tempchart = new Chart(xx, config2);
+// var xx = document.getElementById('tempchart').getContext('2d');
+// var tempchart = new Chart(xx, config2);
 
-var ctx3 = document.getElementById('emgChart').getContext('2d');
-var emgChart = new Chart(ctx3, config3)
+// var ctx3 = document.getElementById('emgChart').getContext('2d');
+// var emgChart = new Chart(ctx3, config3)
 
 
 
@@ -384,7 +372,7 @@ fetch(test + "Data.json")
     let day = now.split(", ")[0];
     let month= now.split(", ")[1].split(" ")[0];
     let tanggal= now.split(", ")[1].split(" ")[1];
-    let hari = document.getElementById('hari').innerHTML = ("Today, ("+ day + ", " + tanggal + " " + month + " 2023)")
+    let hari = document.getElementById('hari').innerHTML = ("Today, ("+ day + ", " + tanggal + " " + month + " 2024)")
     });
 
 function sum(data){
@@ -396,6 +384,7 @@ function sum(data){
 }
 let avgtemp = [];
 let avg = [];
+let avgemg = []
 
 
 function myCallback() {
@@ -410,18 +399,19 @@ function myCallback() {
       value2 = latestEntry[1].Temp;
       now = now.split(", ")[1].split(" ")[2];
 
+      console.log(now)
+      console.log(value)
+      console.log(value2)
+
       data2.labels.push(now)
       data2.datasets[0].data.push(value2);
       avgtemp.push(value2);
 
-      
 
-      document.getElementById('avgtemp').innerHTML = Math.round(sum(avgtemp)/avgtemp.length);
-      document.getElementById('lowtemp').innerHTML = Math.min.apply(null, avgtemp)
+      console.log(avgtemp)
+
+      document.getElementById('avgtemp').innerHTML = Math.round(sum(avgtemp)/avgtemp.length)
       document.getElementById('livetemp').innerHTML = value2;
-      document.querySelectorAll("#hightemp").forEach(high => {
-        high.innerHTML = Math.max.apply(null, avgtemp)
-      })
       if (data2.labels.length > MAX_DATA_POINTS) {
         data2.labels.shift();
         data2.datasets[0].data.shift();
@@ -432,13 +422,10 @@ function myCallback() {
       data.datasets[0].data.push(value);
       avg.push(value);
 
-      document.getElementById('avgbpm').innerHTML = Math.round(sum(avg)/avg.length);
-      document.getElementById('lowbpm').innerHTML = Math.min.apply(null, avg)
+      document.getElementById('avgbpm').innerHTML = Math.round(sum(avg)/avg.length)
+
       document.getElementById('livebpm').innerHTML = value;
-      let high = document.querySelectorAll("#highbpm");
-      high.forEach(high => {
-        high.innerHTML = Math.max.apply(null, avg)
-      })
+      
 
       if (data.labels.length > MAX_DATA_POINTS) {
         data.labels.shift();
@@ -446,8 +433,8 @@ function myCallback() {
         avg.shift();
       }
 
-      myChart.update(); 
-      tempchart.update();
+      // myChart.update(); 
+      // tempchart.update();
     });
 }
 
@@ -463,12 +450,19 @@ function emgCallback(){
       now = now.split(", ")[1].split(" ")[2];
       data3.labels.push(now);
       data3.datasets[0].data.push(value);
+      avgemg.push(value)
+
+      document.getElementById('avgemg').innerHTML = Math.round(sum(avgemg)/avgemg.length);
+
+      document.getElementById('liveemg').innerHTML = value;
+
       if (data3.labels.length > MAX_DATA_POINTS) {
         data3.labels.shift();
         data3.datasets[0].data.shift();
-        avg.shift();
+        avgemg.shift();
       }
-      emgChart.update();
+      
+      // emgChart.update();
     });
 }
 
